@@ -60,7 +60,7 @@ app.post('/', (req, res) => {
   const params = {
     TableName: 'location-data',
     Item: {
-    deviceName: 'samsung-s21+'
+    deviceName: {S: 'Samsung S21+'}
   }
   };
   documentClient.put(params, (err, data) => {
