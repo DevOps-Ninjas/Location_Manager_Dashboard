@@ -65,7 +65,7 @@ app.post('/', (req, res) => {
       longitude
     }
   };
-  documentClient.put(params, (err, data) => {
+  dynamoDB.put(params, (err, data) => {
     if (err) {
       console.error(`Unable to add item. Error JSON: ${JSON.stringify(err, null, 2)}`);
       res.status(500).send('Failed to store location data');
