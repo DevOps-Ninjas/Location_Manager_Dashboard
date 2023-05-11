@@ -56,7 +56,7 @@ app.post('/', (req, res) => {
 
   // create a new item in the DynamoDB table
   const params = {
-    TableName: 'your-table-name',
+    TableName: 'location-data',
     Item: {
       id: uuid.v1(),
       watTime,
