@@ -47,7 +47,7 @@ AWS.config.update({
 
 // create a new instance of the DocumentClient
 // const documentClient = new AWS.DynamoDB({apiVersion: '2012-08-10'});
-const documentClient = new AWS.DynamoDB({
+const documentClient = new AWS.DynamoDB.DocumentClient({
   service: new AWS.DynamoDB({ 
     apiVersion: '2012-08-10',
     logger: console // log all DynamoDB operations to console
@@ -71,7 +71,7 @@ app.post('/', (req, res) => {
       longitude
     }
   };
-  documentClient.putItem(params, (err, data) => {
+  documentClient.put(params, (err, data) => {
     if (err) {
       console.error(`Unable to add item. Error JSON: ${JSON.stringify(err, null, 2)}`);
       res.status(500).send('Failed to store location data');
