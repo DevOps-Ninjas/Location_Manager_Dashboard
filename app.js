@@ -60,10 +60,7 @@ app.post('/', (req, res) => {
   const params = {
     TableName: 'location-data',
     Item: {
-    watTime: watTime,
-    deviceName: deviceName,
-    latitude: latitude,
-    longitude: longitude
+    deviceName: 'samsung-s21+'
   }
   };
   documentClient.put(params, (err, data) => {
