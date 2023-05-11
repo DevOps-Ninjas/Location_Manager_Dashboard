@@ -46,7 +46,7 @@ AWS.config.update({
 });
 
 // create a new instance of the DocumentClient
-const documentClient = DynamoDBDocument.from(new DynamoDB());
+const documentClient = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
 // define a route to receive data from the Android app
 app.post('/', (req, res) => {
@@ -65,7 +65,7 @@ app.post('/', (req, res) => {
       longitude
     }
   };
-  dynamoDB.put(params, (err, data) => {
+  documentClient.putItem(params, (err, data) => {
     if (err) {
       console.error(`Unable to add item. Error JSON: ${JSON.stringify(err, null, 2)}`);
       res.status(500).send('Failed to store location data');
