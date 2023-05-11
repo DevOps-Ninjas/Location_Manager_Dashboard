@@ -46,7 +46,8 @@ AWS.config.update({
 });
 
 // create a new instance of the DocumentClient
-const documentClient = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+// const documentClient = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+const documentClient = DynamoDBDocument.from(new DynamoDB());
 
 // define a route to receive data from the Android app
 app.post('/', (req, res) => {
