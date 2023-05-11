@@ -65,11 +65,10 @@ app.post('/', (req, res) => {
   };
   documentClient.put(params, (err, data) => {
     if (err) {
-      console.error(`Unable to add item. Error JSON: ${JSON.stringify(err, null, 2)}`);
       res.status(500).send('Failed to store location data');
     } else {
-      console.log(`Location data stored in DynamoDB: ${JSON.stringify(params.Item)}`);
       res.status(200).send('Data received and stored successfully');
+      console.log(`Location data stored in DynamoDB: ${JSON.stringify(params.Item)}`);
     }
   });
 });
