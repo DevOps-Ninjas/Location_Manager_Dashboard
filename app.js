@@ -52,7 +52,7 @@ const documentClient = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 app.post('/', (req, res) => {
   const { watTime, deviceName, latitude, longitude } = req.body;
   // process the data
-  console.log(`Received location data: ${watTime}, ${deviceName} (${latitude}, ${longitude})`);
+  console.log(`Received location data: ${watTime}, ${deviceName}, ${latitude}, ${longitude}`);
 
   // create a new item in the DynamoDB table
   const params = {
