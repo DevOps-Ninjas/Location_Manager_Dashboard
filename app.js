@@ -40,57 +40,38 @@ app.use(bodyParser.json());
 
 // configure the AWS SDK
 AWS.config.update({
-  accessKeyId: 'us-east-2',
-  secretAccessKey: '4e1ugawxiOtGkPPlttIo0qWuLl+cCFCiH/0Agr0g',
-  region: 'AKIAXUBC35T6GHASYG24'
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION
 });
-
-
-// Create a new DynamoDB instance
-const dynamodb = new AWS.DynamoDB();
-
-// Define the parameters for the scan operation
-const params = {
-  TableName: 'location-data'
-};
-// Execute the scan operation
-dynamodb.scan(params, (err, data) => {
-  if (err) {
-    console.error(`Unable to scan table. Error JSON: ${JSON.stringify(err, null, 2)}`);
-  } else {
-    console.log(`Scan succeeded. Found ${data.Items.length} items.`);
-    data.Items.forEach((item) => {
-      console.log(JSON.stringify(item));
-    });
-  }
-});
-
-
 
 // create a new instance of the DocumentClient
-// const documentClient = new AWS.DynamoDB({apiVersion: '2012-08-10'});
-const documentClient = DynamoDBDocument.from(new DynamoDB());
+const documentClient = new AWS.DynamoDB.DocumentClient();
 
 // define a route to receive data from the Android app
 app.post('/', (req, res) => {
   const { watTime, deviceName, latitude, longitude } = req.body;
   // process the data
-  console.log(`Received location data: ${watTime}, ${deviceName}, ${latitude}, ${longitude}`);
-  
+  console.log(`Received location data: ${watTime}, ${deviceName} (${latitude}, ${longitude})`);
 
   // create a new item in the DynamoDB table
   const params = {
     TableName: 'location-data',
     Item: {
-    deviceName: {S: 'Samsung S21+'}
-  }
+      id: uuid.v1(),
+      watTime: req.body.watTime,
+      deviceName: req.body.deviceName,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude
+    }
   };
   documentClient.put(params, (err, data) => {
     if (err) {
+      console.error(`Unable to add item. Error JSON: ${JSON.stringify(err, null, 2)}`);
       res.status(500).send('Failed to store location data');
     } else {
-      res.status(200).send('Data received and stored successfully');
       console.log(`Location data stored in DynamoDB: ${JSON.stringify(params.Item)}`);
+      res.status(200).send('Data received and stored successfully');
     }
   });
 });
