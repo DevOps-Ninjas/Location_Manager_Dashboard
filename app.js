@@ -60,12 +60,11 @@ app.post('/', (req, res) => {
   const params = {
     TableName: 'location-data',
     Item: {
-      id: uuid.v1(),
-      watTime: watTime,
-      deviceName: deviceName,
-      latitude: latitude,
-      longitude: longitude
-    }
+    watTime: watTime,
+    deviceName: deviceName,
+    latitude: latitude,
+    longitude: longitude
+  }
   };
   documentClient.put(params, (err, data) => {
     if (err) {
