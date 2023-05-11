@@ -47,7 +47,7 @@ AWS.config.update({
 
 // create a new instance of the DocumentClient
 // const documentClient = new AWS.DynamoDB({apiVersion: '2012-08-10'});
-const documentClient = new AWS.DynamoDB.DocumentClient({
+const documentClient = new AWS.DynamoDB({
   service: new AWS.DynamoDB({ 
     apiVersion: '2012-08-10',
     logger: console // log all DynamoDB operations to console
