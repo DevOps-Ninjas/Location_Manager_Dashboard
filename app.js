@@ -54,16 +54,17 @@ app.post('/', (req, res) => {
   const { watTime, deviceName, latitude, longitude } = req.body;
   // process the data
   console.log(`Received location data: ${watTime}, ${deviceName}, ${latitude}, ${longitude}`);
+  
 
   // create a new item in the DynamoDB table
   const params = {
     TableName: 'location-data',
     Item: {
       id: uuid.v1(),
-      watTime,
-      deviceName,
-      latitude,
-      longitude
+      watTime: watTime,
+      deviceName: deviceName,
+      latitude: latitude,
+      longitude: longitude
     }
   };
   documentClient.put(params, (err, data) => {
