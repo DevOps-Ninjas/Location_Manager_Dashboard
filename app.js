@@ -50,15 +50,15 @@ const documentClient = new AWS.DynamoDB.DocumentClient();
 
 // define a route to receive data from the Android app
 app.post('/', async (req, res) => {
-  const { watTime, deviceName, latitude, longitude } = req.body;
+  const { androidId, watTime, deviceName, latitude, longitude } = req.body;
   // process the data
-  console.log(`Received location data: ${watTime}, ${deviceName} (${latitude}, ${longitude})`);
+  console.log(`Received location data: ${androidId}, ${watTime}, ${deviceName}, (${latitude}, ${longitude})`);
 
   // create a new item in the DynamoDB table
   const params = {
     TableName: 'location-data',
     Item: {
-      id: uuid.v1(),
+      androidId: req.body.androidId,
       watTime: req.body.watTime,
       deviceName: req.body.deviceName,
       latitude: req.body.latitude,
