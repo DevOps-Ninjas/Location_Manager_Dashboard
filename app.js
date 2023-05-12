@@ -49,7 +49,7 @@ AWS.config.update({
 const documentClient = new AWS.DynamoDB.DocumentClient();
 
 // define a route to receive data from the Android app
-app.post('/', (req, res) => {
+app.post('/', async (req, res) => {
   const { watTime, deviceName, latitude, longitude } = req.body;
   // process the data
   console.log(`Received location data: ${watTime}, ${deviceName} (${latitude}, ${longitude})`);
@@ -65,15 +65,15 @@ app.post('/', (req, res) => {
       longitude: req.body.longitude
     }
   };
-  documentClient.put(params, (err, data) => {
-    if (err) {
-      console.error(`Unable to add item. Error JSON: ${JSON.stringify(err, null, 2)}`);
-      res.status(500).send('Failed to store location data');
-    } else {
-      console.log(`Location data stored in DynamoDB: ${JSON.stringify(params.Item)}`);
-      res.status(200).send('Data received and stored successfully');
-    }
-  });
+  
+  try {
+    const data = await documentClient.put(params).promise();
+    console.log(`Location data stored in DynamoDB: ${JSON.stringify(params.Item)}`);
+    res.status(200).send('Data received and stored successfully');
+  } catch (err) {
+    console.error(`Unable to add item. Error JSON: ${JSON.stringify(err, null, 2)}`);
+    res.status(500).send('Failed to store location data');
+  }
 });
 
 // start the server
