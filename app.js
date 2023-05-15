@@ -67,7 +67,7 @@ app.post('/', async (req, res) => {
   };
   
   try {
-    const data = await documentClient.put(params).promise();
+    await documentClient.put(params).promise();
     console.log(`Location data stored in DynamoDB: ${JSON.stringify(params.Item)}`);
     res.status(200).send('Data received and stored successfully');
   } catch (err) {
